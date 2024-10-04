@@ -20,7 +20,7 @@ registerForm.addEventListener("submit", function (evt) {
   evt.preventDefault();
 
   validateRegister(evt);
-  if (validate) {
+  if (validateRegister(evt)) {
     let userObj = {};
 
     console.log("form submitted");
@@ -40,12 +40,13 @@ registerForm.addEventListener("submit", function (evt) {
     userObj.password = password1Register.value;
 
     localStorage.setItem(userNameRegisterEl.value, JSON.stringify(userObj));
+
+    registerForm.reset();
   } else {
     return;
   }
 
   // Reset the form
-  registerForm.reset();
 });
 
 // Login Event Listener
@@ -54,8 +55,13 @@ loginForm.addEventListener("submit", function (evt) {
   evt.preventDefault();
 
   login(evt);
-
-  loginForm.reset();
+  console.log(login(evt));
+  if (login(evt)) {
+    console.log("success");
+    loginForm.reset();
+  } else {
+    return;
+  }
 });
 
 // Functions
@@ -71,9 +77,11 @@ function validateRegister(evt) {
   if (passwordVal === false) {
     return false;
   }
+
+  return true;
 }
 
-function login() {
+function login(evt) {
   const userLoginVal = validateUsernameLogin();
   if (userLoginVal === false) {
     evt.preventDefault();
@@ -81,10 +89,12 @@ function login() {
   }
 
   const passwordLoginVal = validatePasswordLogin();
-  if (userLoginVal === false) {
+  if (passwordLoginVal === false) {
     evt.preventDefault();
     return false;
   }
+
+  return true;
 }
 
 function validateEmail() {
@@ -142,6 +152,7 @@ function validatePassword() {
     password2Register.focus();
     return false;
   }
+
   return password1Register.value;
 }
 
@@ -168,7 +179,13 @@ function validateUsernameLogin() {
   }
 }
 
-function validatePasswordLogin() {}
+function validatePasswordLogin() {
+  if (passwordLoginEl.value === "") {
+    displayMessage("Password cannot be blank");
+    passwordLoginEl.focus();
+    return false;
+  }
+}
 
 function displayMessage(message) {
   alertBox.textContent = message;
