@@ -13,6 +13,7 @@ const alertBox = document.getElementById("errorDisplay");
 const loginForm = document.getElementById("login");
 const usernameLoginEl = loginForm.elements["username"];
 const passwordLoginEl = loginForm.elements["password"];
+const loginInCheckBoxEl = loginForm.elements["persist"];
 
 // Register Event Listener
 // ===========================================
@@ -57,6 +58,11 @@ loginForm.addEventListener("submit", function (evt) {
   login(evt);
 
   if (login(evt)) {
+    if (loginInCheckBoxEl.checked == true) {
+      displayMessage("Success, Your login has been saved");
+    } else {
+      displayMessage("Success");
+    }
     loginForm.reset();
   } else {
     return;
@@ -191,8 +197,14 @@ function validatePasswordLogin() {
   }
 
   const matchingPassword = passwordArray.map(function (pass) {
-    if (passwordLoginEl.value === pass.password) {
+    if (
+      passwordLoginEl.value === pass.password &&
+      usernameLoginEl.value === pass.username
+    ) {
       return true;
+    } else {
+      displayMessage("Your password is incorrect");
+      return false;
     }
   });
 
