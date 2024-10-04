@@ -59,9 +59,9 @@ loginForm.addEventListener("submit", function (evt) {
 
   if (login(evt)) {
     if (loginInCheckBoxEl.checked == true) {
-      displayMessage("Success, Your login has been saved");
+      displaySuccessMessage("Success, Your login has been saved");
     } else {
-      displayMessage("Success");
+      displaySuccessMessage("Success");
     }
     loginForm.reset();
   } else {
@@ -214,6 +214,16 @@ function validatePasswordLogin() {
 
 function displayMessage(message) {
   alertBox.textContent = message;
+  alertBox.style.display = "flex";
+  setTimeout(() => {
+    alertBox.style.display = "none";
+  }, 2000);
+}
+
+function displaySuccessMessage(message) {
+  alertBox.textContent = message;
+  alertBox.style.backgroundColor = "green";
+  alertBox.style.color = "white";
   alertBox.style.display = "flex";
   setTimeout(() => {
     alertBox.style.display = "none";
