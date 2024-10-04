@@ -55,9 +55,8 @@ loginForm.addEventListener("submit", function (evt) {
   evt.preventDefault();
 
   login(evt);
-  console.log(login(evt));
+
   if (login(evt)) {
-    console.log("success");
     loginForm.reset();
   } else {
     return;
@@ -185,6 +184,20 @@ function validatePasswordLogin() {
     passwordLoginEl.focus();
     return false;
   }
+
+  let passwordArray = [];
+  for (let i = 0; i < localStorage.length; i++) {
+    passwordArray.push(JSON.parse(localStorage.getItem(localStorage.key(i))));
+  }
+
+  const matchingPassword = passwordArray.map(function (pass) {
+    if (passwordLoginEl.value === pass.password) {
+      return true;
+    }
+  });
+
+  console.log(passwordArray);
+  console.log(matchingPassword);
 }
 
 function displayMessage(message) {
