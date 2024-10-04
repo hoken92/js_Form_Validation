@@ -19,7 +19,7 @@ const passwordLoginEl = loginForm.elements["password"];
 registerForm.addEventListener("submit", function (evt) {
   evt.preventDefault();
 
-  validate(evt);
+  validateRegister(evt);
   if (validate) {
     let userObj = {};
 
@@ -54,11 +54,13 @@ loginForm.addEventListener("submit", function (evt) {
   evt.preventDefault();
 
   login(evt);
+
+  loginForm.reset();
 });
 
 // Functions
 // ===========================================
-function validate(evt) {
+function validateRegister(evt) {
   const emailVal = validateEmail();
   if (emailVal === false) {
     evt.preventDefault();
@@ -71,7 +73,19 @@ function validate(evt) {
   }
 }
 
-function login() {}
+function login() {
+  const userLoginVal = validateUsernameLogin();
+  if (userLoginVal === false) {
+    evt.preventDefault();
+    return false;
+  }
+
+  const passwordLoginVal = validatePasswordLogin();
+  if (userLoginVal === false) {
+    evt.preventDefault();
+    return false;
+  }
+}
 
 function validateEmail() {
   let emailVal = emailEl.value;
@@ -130,6 +144,31 @@ function validatePassword() {
   }
   return password1Register.value;
 }
+
+function validateUsernameLogin() {
+  if (usernameLoginEl.value === "") {
+    displayMessage("Username cannot be blank");
+    usernameLoginEl.focus();
+    return false;
+  }
+
+  let matchingUser = false;
+
+  const username = usernameLoginEl.value.toLowerCase();
+  for (let i = 0; i < localStorage.length; i++) {
+    if (username === localStorage.key(i)) {
+      matchingUser = true;
+    }
+  }
+
+  if (matchingUser === false) {
+    displayMessage("Username does not exist");
+    usernameLoginEl.focus();
+    return false;
+  }
+}
+
+function validatePasswordLogin() {}
 
 function displayMessage(message) {
   alertBox.textContent = message;
